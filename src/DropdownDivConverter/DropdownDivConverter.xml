@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="DropdownDivConverter.widget.DropdownDivConverter" needsEntityContext="false" xmlns="http://www.mendix.com/widget/1.0/">
+    <name>DropdownDivConverter</name>
+    <description>The DropdownDivConverter converts a Mendix (div-)container into a dropdown menu with a button. Simply create a container in Mendix with the DropdownDivConverter widget in it as it's first child. Everything you will then add as content will be the content of the dropdown menu.</description>
+
+    <icon>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAK9JREFUeNpilJWV/s8AAY2PHz9tAPL3A9kOUDFHKL0fSh8AqnEEqmkAsutBAkwMFAJGqGkMINtJ0QjTx0ANF+yHusCRRBeA9bEgBRipwAFmALKpBUBKgIDGD0DXToBxWJCiChxN0CjDZcgHJPWOGNEINPkCVOIDLs1QNXDABLVxPwFDsGkG68OakNAMwWozchgcwGUIMFAdkQxEBweolpAoSsossFwFFGAYkNwIEGAAHt5XWk5gQGoAAAAASUVORK5CYII=</icon>
+    
+    <properties>
+        <property key="buttonTitle" type="string" defaultValue="" required="false">
+            <caption>dropdown button title</caption>
+            <category>Settings</category>
+            <description>the title on the dropdown button</description>
+        </property>
+        <property key="startOpen" type="boolean" defaultValue="false" required="true">
+            <caption>start open</caption>
+            <category>Settings</category>
+            <description>will the menu be open on load?</description>
+        </property>
+    </properties>
+</widget>
+

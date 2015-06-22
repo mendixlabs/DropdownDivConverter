@@ -1,0 +1,12 @@
+.dropdown-div-converter .dropdown-button {
+    display: block;
+}
+
+.dropdown-div-converter .dropdown-menu {
+    display: none;
+    padding: 5px;
+}
+
+.dropdown-div-converter.open .dropdown-menu {
+    display:block;   
+}
