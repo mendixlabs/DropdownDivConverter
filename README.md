@@ -33,5 +33,8 @@ It's possible to use multiple DropdownDivConverter widgets on the same page. Tha
 
 Since the dropdown menu is based on bootstraps dropdown button it is recommended to follow the applications Bootstrap theming rules with respect to buttons.
 
+This widget is not suited for IE8 usage. Please use a more modern browser.
+
+
 ## More information
 http://http://bootstrapdocs.com/v3.0.2/docs/components/#btn-dropdowns
