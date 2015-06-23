@@ -47,7 +47,7 @@
             </enumerationValues>
         </property>
         <property key="splitButtonActive" type="boolean" defaultValue="false" required="true">
-            <caption>Create Split button dropdown</caption>
+            <caption>Split button dropdown</caption>
             <category>Split button</category>
             <description>Create a split button dropdown which has an extra button with microflow. Note: the label for the dropdown will be used for this button.</description>
         </property>
