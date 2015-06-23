@@ -14,8 +14,11 @@ The DropdownDivConverter converts a Mendix (div-)container into a - Bootstrap ba
 
 The split button is a special button combination in Bootstrap: it offers a primary button and pasted onto it a dropdown button offering access to the dropdown menu.
 The DropdownDivConverter widget offers two ways of adding behaviour to the primary button:
+
 1. Use a simple microflow without a needed entity: use the Simple Microflow setting and leave the Microflow setting empty.
+
 2. Use a microflow with an entity as it's parameter: use the Microflow and Context object setting to accomplish this.
+
 
 Note that 'Dropdown button label'-setting will now be used for the label on the primary button instead.
 
