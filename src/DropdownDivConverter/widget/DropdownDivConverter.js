@@ -14,8 +14,7 @@
 
     Documentation
     ========================
-    The DropdownDivConverter converts a Mendix (div-)container into a dropdown menu with a button.
-	Simply create a container in Mendix with the DropdownDivConverter widget in it as it's first child. Everything you will then add as content will be the content of the dropdown menu.
+    The DropdownDivConverter converts a Mendix (div-)container into a - Bootstrap based - dropdown menu with a button. Simply create a container in Mendix with all the content you want in the dropdown menu and the DropdownDivConverter widget as it's last child. Everything you will have added then becomes the content of the dropdown menu.
 */
 
 // Required module list. Remove unnecessary modules, you can always get them back from the boilerplate.
@@ -34,13 +33,18 @@ define([
 
         // Parameters configured in the Modeler.
         buttonTitle: "",
+        isDropUp: "",
         startOpen: "",
+        splitButtonActive: "",
+        splitButtonClicked:"",
 
         // Internal variables. Non-primitives created in the prototype are shared between all widget instances.
         _handles: null,
         _contextObj: null,
         _alertDiv: null,
+        _allDropDowns: {},
         _eventsSet: null,
+        _isOpen: null,
 
         // dojo.declare.constructor is called to construct the widget instance. Implement to initialize non-primitive properties.
         constructor: function () {
@@ -50,65 +54,20 @@ define([
 
         // dijit._WidgetBase.postCreate is called after constructing the widget. Implement to do extra setup work.
         postCreate: function () {
-            this._updateRendering(function(){});
+            this._allDropDowns[this.id] = this;
+            this._isOpen = false;
         },
-
+        
         // mxui.widget._WidgetBase.update is called when context is changed or initialized. Implement to re-render and / or fetch data.
         update: function (obj, callback) {
             this._contextObj = obj;
+            
             this._resetSubscriptions();
             this._updateRendering(callback);
 
         },
 
-        // mxui.widget._WidgetBase.enable is called when the widget should enable editing. Implement to enable editing if widget is input widget.
-        enable: function () {},
-
-        // mxui.widget._WidgetBase.enable is called when the widget should disable editing. Implement to disable editing if widget is input widget.
-        disable: function () {},
-
-        // mxui.widget._WidgetBase.resize is called when the page's layout is recalculated. Implement to do sizing calculations. Prefer using CSS instead.
-        resize: function (box) {},
-
-        // mxui.widget._WidgetBase.uninitialize is called when the widget is destroyed. Implement to do special tear-down work.
-        uninitialize: function () {
-            // Clean up listeners, helper objects, etc. There is no need to remove listeners added with this.connect / this.subscribe / this.own.
-        },
-
-        // Attach events to HTML dom elements
-        _setupEvents: function (callback) {
-            // only set events one time
-            if (!this._eventsSet) {
-                this._eventsSet = true;
-                
-                // set window click
-                this.connect(document, "click", lang.hitch(this,function(event){
-                    // if a widget external click is made: close the menu if open
-                    if(domClass.contains(this.domNode,"open")){
-                        domClass.remove(this.domNode,"open");
-                    }
-                }));
-
-                // set action for button
-                this.connect(this.dropdownButton, "click", lang.hitch(this,function(e){
-                    event.stop(e);
-                    this._toggleMenu();
-                }));  
-
-            }
-            callback();
-        },
-
-        // toggle dropdown state
-        _toggleMenu: function() {
-            if (domClass.contains(this.domNode,"open")){
-                domClass.remove(this.domNode,"open");   
-            } else {
-                domClass.add(this.domNode,"open");   
-            }
-        },
-
-        // Rerender the interface.
+        // Reordering the interface: selecting the siblings and putting them in the dropdown menu
         _updateRendering: function (callback) {
             // find all the siblings
             var siblings = domQuery(this.domNode).siblings();
@@ -123,11 +82,151 @@ define([
         // Really render the interface, if renderAsOpen is true: render the menu in open state
         _renderInterface: function(renderAsOpen, callback) {
             this.dropdownButton.innerHTML = this.buttonTitle + "<span class='caret'></span>";
+            this._setButtonTypes(this.dropdownButton);
+            
+            // implement visual settings of the widget
             if (renderAsOpen && !domClass.contains(this.domNode,"open")) {
-                domClass.add(this.domNode,"open");  
+                domClass.add(this.domNode,"open"); 
+                this._isOpen = true;
+            }
+            if (this.isDropUp) {
+                this._transformToDropUp();
+            }
+            if (this.splitButtonActive) {
+                this._createSplitButton();  
+            } else {
+                domConstruct.destroy(this.splitButton);  
             }
             
             this._setupEvents(callback);  
+        },
+        
+        // Attach events to HTML dom elements
+        _setupEvents: function (callback) {
+            // only set events one time
+            if (!this._eventsSet) {
+                this._eventsSet = true;
+                
+                // set window click
+                this.connect(document, "click", lang.hitch(this,function(event){
+                    // if a widget external click is made: close the menu if open
+                    if(domClass.contains(this.domNode,"open")){
+                        domClass.remove(this.domNode,"open");
+                        this._isOpen = false;
+                    }
+                }));
+
+                // set action for the normal dropdown button
+                this.connect(this.dropdownButton, "click", lang.hitch(this,function(e){
+                    event.stop(e);
+                    var dropdown = null;
+                    
+                    for(dropdown in this._allDropDowns) {
+                        if (this._allDropDowns.hasOwnProperty(dropdown) && dropdown !== this.id){
+                            if (this._allDropDowns[dropdown]._isOpen === true) {
+                                domClass.remove(this._allDropDowns[dropdown].domNode, "open");
+                                this._allDropDowns[dropdown]._isOpen = false;
+                            }
+                        }         
+                    }
+                    
+                    this._toggleMenu();
+                }));  
+                
+                // set the action for the possible split group button
+                if (this.splitButtonActive){
+                    this.connect(this.splitButton, "click", lang.hitch(this, function(e){
+                        
+                        // if a microflow is checked and a contextobject is defined
+                        if (this.splitButtonClicked !== "" && this._contextObj) {
+                            // do we have a contextObj for the microflow?
+                            
+                            var id = this._contextObj.getGuid();
+
+                            mx.data.action({
+                                params          : {
+                                    applyto     : "selection",
+                                    actionname  : this.splitButtonClicked,
+                                    guids       : [id]
+                                },
+                                callback        : function(success) {
+                                    // if success was true, the microflow was indeed followed through
+                                },
+                                error           : function(error) {
+                                    // if there was an error
+                                } 
+                            }, this);
+                        } else if (this.simpleSplitButtonClicked !== "") {
+
+                            mx.data.action({
+                                params          : {
+                                    applyto     : "none",
+                                    actionname  : this.simpleSplitButtonClicked
+                                },
+                                callback        : function(success) {
+                                    // if success was true, the microflow was indeed followed through
+                                },
+                                error           : function(error) {
+                                    // if there was an error
+                                }
+                            }, this);
+                        }
+                        
+                    }));
+                }
+
+            }
+            callback();
+        },
+        
+        // toggle dropdown state
+        _toggleMenu: function() {
+            if (domClass.contains(this.domNode,"open")){
+                domClass.remove(this.domNode,"open");
+                this._isOpen = false;
+            } else {
+                domClass.add(this.domNode,"open");
+                this._isOpen = true;
+            }
+        },
+        
+        // Set button types: size and type
+        _setButtonTypes: function(button){
+            // first set the button type
+            var typeClassName = "btn-"+this.buttonType,
+                sizeClassName;
+            
+            if (!domClass.contains(button,typeClassName)){
+                domClass.add(button,typeClassName);
+            }
+            
+            switch(this.buttonSize) {
+                case "default":
+                    // default buttonsize is allready implemented
+                    break;
+                default:
+                    sizeClassName = "btn-"+this.buttonSize;
+                    if (!domClass.contains(button,sizeClassName)){
+                        domClass.add(button,sizeClassName);
+                    }                    
+            }
+        },
+        
+        // Transform the dropdown into a dropup
+        _transformToDropUp: function() {
+            if (!domClass.contains(this.domNode,"dropup")){
+                domClass.add(this.domNode,"dropup");
+            }
+        },
+        
+        // Create a split button group 
+        _createSplitButton: function() {
+            // create the new split button
+            this.splitButton.innerHTML = this.buttonTitle;
+            this._setButtonTypes(this.splitButton);
+            
+            // adjust the dropdownButtons content
+            this.dropdownButton.innerHTML = "<span class='caret'></span><span class='sr-only'>Toggle Dropdown</span";
         },
 
         // Reset subscriptions.

@@ -2,6 +2,14 @@
     display: block;
 }
 
+.dropdown-div-converter .dropdown-button .caret {
+    margin-left:5px;
+}
+
+.dropdown-div-converter button + .dropdown-button .caret {
+    margin-left:0;   
+}
+
 .dropdown-div-converter .dropdown-menu {
     display: none;
     padding: 5px;
