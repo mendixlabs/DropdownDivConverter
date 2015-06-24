@@ -8,7 +8,7 @@
     @file      : DropdownDivConverter.js
     @version   : 1.0
     @author    : Willem Gorisse
-    @date      : Wed, 17 Jun 2015 15:15:32 GMT
+    @date      : Wed, 24 Jun 2015 15:15:32 GMT
     @copyright : 2015 Mendix
     @license   : Apache Licence 2.0
 
@@ -237,9 +237,10 @@ define([
 
             // Release handles on previous object, if any.
             if (this._handles) {
-                this._handles.forEach(function (handle, i) {
+                dojoArray.forEach(this._handles, function(handle, i){
                     mx.data.unsubscribe(handle);
                 });
+
                 this._handles = [];
             }
 

@@ -35,7 +35,7 @@
         <property key="buttonType" type="enumeration" defaultValue="default">
             <caption>Button type</caption>
             <category>Appearance</category>
-            <description>The size of the dropdown button</description>
+            <description>The (bootstrap-) type of the dropdown button</description>
             <enumerationValues>
                 <enumerationValue key="default">default</enumerationValue>
                 <enumerationValue key="primary">primary</enumerationValue>
