@@ -176,7 +176,7 @@ define([
                 }
 
             }
-            callback();
+            callback && callback();
         },
         
         // toggle dropdown state
