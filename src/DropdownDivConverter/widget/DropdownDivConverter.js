@@ -35,6 +35,7 @@ define([
         buttonTitle: "",
         isDropUp: "",
         startOpen: "",
+        autoClose: "",
         splitButtonActive: "",
         splitButtonClicked:"",
 
@@ -131,7 +132,26 @@ define([
                     }
                     
                     this._toggleMenu();
-                }));  
+                }));
+                
+                // prevent default closing on dropdownMenu if needed
+                if (!this.autoClose){
+                    this.connect(this.dropdownMenu, "click", lang.hitch(this,function(e) {
+                        event.stop(e);
+                    }));
+                }
+                
+                // Mendix buttons and links stop events from bubbling: set actions for internal button clicks to close the menu if needed
+                if (this.autoClose){
+                    var internalButtons = domQuery("button, a",this.dropdownMenu);
+                    dojoArray.forEach(internalButtons, lang.hitch(this,function(node, i){
+                        this.connect(node, "click", lang.hitch(this, function(e) {
+                            if (this._isOpen){
+                                this._toggleMenu();   
+                            }
+                        }));
+                    }));
+                }
                 
                 // set the action for the possible split group button
                 if (this.splitButtonActive){
@@ -176,7 +196,9 @@ define([
                 }
 
             }
-            callback();
+            if (callback){
+                callback();
+            }
         },
         
         // toggle dropdown state

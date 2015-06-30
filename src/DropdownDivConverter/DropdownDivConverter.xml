@@ -21,6 +21,11 @@
             <category>General</category>
             <description>Will the menu be open on load?</description>
         </property>
+        <property key="autoClose" type="boolean" defaultValue="true" required="true">
+            <caption>Menu self-close</caption>
+            <category>General</category>
+            <description>If set to true: clicking on the menu or it's buttons will close the dropdown menu.</description>
+        </property>
         <property key="buttonSize" type="enumeration" defaultValue="default">
             <caption>Button size</caption>
             <category>Appearance</category>
