@@ -33,6 +33,11 @@ It's possible to use multiple DropdownDivConverter widgets on the same page. Tha
 
 Since the dropdown menu is based on bootstraps dropdown button it is recommended to follow the applications Bootstrap theming rules with respect to buttons.
 
+## Release Notes
+Appstore 1.1 release:
+- missing callback bug preventing correct reset behaviour (e.g. if a blocking popup is closed).
+- dropdown menu internal links will now automatically close the menu.
+- new option to prevent auto closing the dropdown menu if clicked on or in the menu.
 
 ## More information
 http://http://bootstrapdocs.com/v3.0.2/docs/components/#btn-dropdowns
