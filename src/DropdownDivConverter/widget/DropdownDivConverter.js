@@ -96,15 +96,15 @@ define([
                 this._transformToDropUp();
             }
             if (this.isDropRight) {
-                if (!domClass.contains(this.dropdownMenu,"dropdown-menu-right")){
-                    domClass.add(this.dropdownMenu,"dropdown-menu-right");
-            }
-            // allows glyphicon to used by the button
-            if (!domClass.contains(this.dropdownButton,this.buttonClass)){
-                domClass.add(this.dropdownButton,this.buttonClass);
-            }
-            
-            }
+                if (!domClass.contains(this.dropdownMenu, "dropdown-menu-right")) {
+                    domClass.add(this.dropdownMenu, "dropdown-menu-right");
+                }
+                // allows glyphicon to used by the button
+                if (!domClass.contains(this.dropdownButton, this.buttonClass)) {
+                    domClass.add(this.dropdownButton, this.buttonClass);
+                }
+
+            }            
             if (this.splitButtonActive) {
                 this._createSplitButton();
             } else {
