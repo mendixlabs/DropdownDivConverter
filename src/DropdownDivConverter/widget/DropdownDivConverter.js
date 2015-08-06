@@ -37,6 +37,8 @@ define([
         startOpen: "",
         splitButtonActive: "",
         splitButtonClicked:"",
+		buttonClass: "",
+        isDropRight: "",
 
         // Internal variables. Non-primitives created in the prototype are shared between all widget instances.
         _handles: null,
@@ -92,8 +94,18 @@ define([
             if (this.isDropUp) {
                 this._transformToDropUp();
             }
+            if (this.isDropRight) {
+                if (!domClass.contains(this.dropdownMenu,"dropdown-menu-right")){
+                    domClass.add(this.dropdownMenu,"dropdown-menu-right");
+            }
+            // allows glyphicon to used by the button
+            if (!domClass.contains(this.dropdownButton,this.buttonClass)){
+                domClass.add(this.dropdownButton,this.buttonClass);
+            }
+            
+            }
             if (this.splitButtonActive) {
-                this._createSplitButton();  
+                this._createSplitButton();
             } else {
                 domConstruct.destroy(this.splitButton);  
             }
@@ -199,7 +211,7 @@ define([
             if (!domClass.contains(button,typeClassName)){
                 domClass.add(button,typeClassName);
             }
-            
+			
             switch(this.buttonSize) {
                 case "default":
                     // default buttonsize is allready implemented

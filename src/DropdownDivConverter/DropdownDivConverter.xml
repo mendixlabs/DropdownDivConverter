@@ -11,10 +11,20 @@
             <category>General</category>
             <description>The label on the dropdown button.</description>
         </property>
+        <property key="buttonClass" type="string" defaultValue="" required="false">
+            <caption>Dropdown button class</caption>
+            <category>General</category>
+            <description>The class on the dropdown button.</description>
+        </property>
         <property key="isDropUp" type="boolean" defaultValue="false" required="true">
             <caption>Drop up</caption>
             <category>General</category>
             <description>Use a drop up menu instead of a dropdown menu</description>
+        </property>
+        <property key="isDropRight" type="boolean" defaultValue="false" required="true">
+            <caption>Drop right</caption>
+            <category>General</category>
+            <description>Menu should drop starting from the right instead of starting from the left</description>
         </property>
         <property key="startOpen" type="boolean" defaultValue="false" required="true">
             <caption>Start open</caption>
