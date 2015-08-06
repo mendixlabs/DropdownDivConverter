@@ -39,7 +39,7 @@ define([
         splitButtonActive: "",
         splitButtonClicked:"",
 		buttonClass: "",
-        isDropRight: "",
+        isMenuRight: "",
 
         // Internal variables. Non-primitives created in the prototype are shared between all widget instances.
         _handles: null,
@@ -95,16 +95,13 @@ define([
             if (this.isDropUp) {
                 this._transformToDropUp();
             }
-            if (this.isDropRight) {
-                if (!domClass.contains(this.dropdownMenu, "dropdown-menu-right")) {
-                    domClass.add(this.dropdownMenu, "dropdown-menu-right");
-                }
-                // allows glyphicon to used by the button
-                if (!domClass.contains(this.dropdownButton, this.buttonClass)) {
-                    domClass.add(this.dropdownButton, this.buttonClass);
-                }
-
+            if (this.isMenuRight) {
+                this._transformToMenuRight();
             }            
+            // allows glyphicon to used by the button
+            if (!domClass.contains(this.dropdownButton, this.buttonClass)) {
+                domClass.add(this.dropdownButton, this.buttonClass);
+            }
             if (this.splitButtonActive) {
                 this._createSplitButton();
             } else {
@@ -253,6 +250,18 @@ define([
             }
         },
         
+        // Transform the dropdown menu from left to right
+        _transformToMenuRight: function() {
+            // for bootstrap 3.1+
+            if (!domClass.contains(this.dropdownMenu, "dropdown-menu-right")) {
+                domClass.add(this.dropdownMenu, "dropdown-menu-right");
+            }
+            // for bootstrap 3.1-
+            if (!domClass.contains(this.dropdownMenu, "pull-right")) {
+                domClass.add(this.dropdownMenu, "pull-right");
+            }
+        },
+
         // Create a split button group 
         _createSplitButton: function() {
             // create the new split button

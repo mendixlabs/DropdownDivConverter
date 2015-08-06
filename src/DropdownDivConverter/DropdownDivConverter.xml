@@ -21,8 +21,8 @@
             <category>General</category>
             <description>Use a drop up menu instead of a dropdown menu</description>
         </property>
-        <property key="isDropRight" type="boolean" defaultValue="false" required="true">
-            <caption>Drop right</caption>
+        <property key="isMenuRight" type="boolean" defaultValue="false" required="true">
+            <caption>Menu right</caption>
             <category>General</category>
             <description>Menu should drop starting from the right instead of starting from the left</description>
         </property>
