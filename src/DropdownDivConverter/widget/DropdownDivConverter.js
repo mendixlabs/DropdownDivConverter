@@ -34,6 +34,7 @@ define([
         // Parameters configured in the Modeler.
         buttonTitle: "",
         isDropUp: "",
+        isRightAligned: "",
         startOpen: "",
         autoClose: "",
         splitButtonActive: "",
@@ -92,6 +93,11 @@ define([
             }
             if (this.isDropUp) {
                 this._transformToDropUp();
+            }
+            if (this.isRightAligned) {
+                if (!domClass.contains(this.dropdownMenu, "dropdown-menu-right")) {
+                    domClass.add(this.dropdownMenu, "dropdown-menu-right");
+                }   
             }
             if (this.splitButtonActive) {
                 this._createSplitButton();  

@@ -16,6 +16,11 @@
             <category>General</category>
             <description>Use a drop up menu instead of a dropdown menu</description>
         </property>
+        <property key="isRightAligned" type="boolean" defaultValue="false" required="true">
+            <caption>Right aligned menu</caption>
+            <category>General</category>
+            <description>Align the menu to the right for right-hand side usage of the view</description>
+        </property>
         <property key="startOpen" type="boolean" defaultValue="false" required="true">
             <caption>Start open</caption>
             <category>General</category>

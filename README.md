@@ -39,5 +39,8 @@ Appstore 1.1 release:
 - dropdown menu internal links will now automatically close the menu.
 - new option to prevent auto closing the dropdown menu if clicked on or in the menu.
 
+Appstore 1.2 release:
+- added dropdown-menu-right option for the dropdown menu realising right aligned dropdown menu's.
+
 ## More information
 http://http://bootstrapdocs.com/v3.0.2/docs/components/#btn-dropdowns
