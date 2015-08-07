@@ -33,6 +33,7 @@ define([
 
         // Parameters configured in the Modeler.
         buttonTitle: "",
+        buttonIconClass: "",
         isDropUp: "",
         isRightAligned: "",
         startOpen: "",
@@ -84,6 +85,9 @@ define([
         // Really render the interface, if renderAsOpen is true: render the menu in open state
         _renderInterface: function(renderAsOpen, callback) {
             this.dropdownButton.innerHTML = this.buttonTitle + "<span class='caret'></span>";
+            if (!this.splitButtonActive) {
+                this._setIconClass(this.dropdownButton);
+            }            
             this._setButtonTypes(this.dropdownButton);
             
             // implement visual settings of the widget
@@ -240,6 +244,19 @@ define([
             }
         },
         
+        // Set button icon class
+        _setIconClass: function(button){
+            if (this.buttonIconClass !== '') {
+                var span = "<span class='" + this.buttonIconClass + "' aria-hidden='true'></span>";
+                
+                if (this.buttonTitle !== '') {
+                    // add a space in between the icon and text
+                    span += " ";
+                }
+                button.innerHTML = span + button.innerHTML;
+            }
+        },
+        
         // Transform the dropdown into a dropup
         _transformToDropUp: function() {
             if (!domClass.contains(this.domNode,"dropup")){
@@ -251,6 +268,7 @@ define([
         _createSplitButton: function() {
             // create the new split button
             this.splitButton.innerHTML = this.buttonTitle;
+            this._setIconClass(this.splitButton);
             this._setButtonTypes(this.splitButton);
             
             // adjust the dropdownButtons content
