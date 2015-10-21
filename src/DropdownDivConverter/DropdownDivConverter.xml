@@ -11,6 +11,11 @@
             <category>General</category>
             <description>The label on the dropdown button.</description>
         </property>
+        <property key="buttonGlyphicon" type="string" defaultValue="" required="false">
+            <caption>Glyphicon icon</caption>
+            <category>General</category>
+            <description>Add a Bootstrap glyphicon icon to the button by entering the glyphicon classname (e.g. 'glyphicon-user'). If left empty, no icon will be created.</description>
+        </property>
         <property key="isDropUp" type="boolean" defaultValue="false" required="true">
             <caption>Drop up</caption>
             <category>General</category>

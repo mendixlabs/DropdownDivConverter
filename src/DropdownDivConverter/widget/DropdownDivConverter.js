@@ -33,6 +33,7 @@ define([
 
         // Parameters configured in the Modeler.
         buttonTitle: "",
+        buttonGlyphicon: "",
         isDropUp: "",
         isRightAligned: "",
         startOpen: "",
@@ -83,7 +84,12 @@ define([
 
         // Really render the interface, if renderAsOpen is true: render the menu in open state
         _renderInterface: function(renderAsOpen, callback) {
-            this.dropdownButton.innerHTML = this.buttonTitle + "<span class='caret'></span>";
+            this.dropdownButton.innerHTML = this.buttonTitle + "<span class='caret'></span>";            
+            // if a glyphicon icon was requested and the splitButton is not wanted: add the glyphicon to the button.
+            if (this.buttonGlyphicon !== '' && !this.splitButtonActive){
+                this._addGlyphicon(this.dropdownButton);   
+            }
+            
             this._setButtonTypes(this.dropdownButton);
             
             // implement visual settings of the widget
@@ -102,7 +108,7 @@ define([
             if (this.splitButtonActive) {
                 this._createSplitButton();  
             } else {
-                domConstruct.destroy(this.splitButton);  
+                domConstruct.destroy(this.splitButton);
             }
             
             this._setupEvents(callback);  
@@ -251,10 +257,19 @@ define([
         _createSplitButton: function() {
             // create the new split button
             this.splitButton.innerHTML = this.buttonTitle;
+            // if a glyphicon icon was requested: add the glyphicon to the button.
+            if (this.buttonGlyphicon !== ''){
+                this._addGlyphicon(this.splitButton);   
+            }
             this._setButtonTypes(this.splitButton);
             
             // adjust the dropdownButtons content
             this.dropdownButton.innerHTML = "<span class='caret'></span><span class='sr-only'>Toggle Dropdown</span";
+        },
+        
+        // Add a glyphicon to a button
+        _addGlyphicon: function(buttonObject) {
+            buttonObject.innerHTML = "<span class='glyphicon " + this.buttonGlyphicon + "'></span>" + buttonObject.innerHTML;
         },
 
         // Reset subscriptions.

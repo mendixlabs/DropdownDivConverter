@@ -16,7 +16,11 @@
 }
 
 .dropdown-div-converter.open .dropdown-menu {
-    display:block;   
+    display: block;   
+}
+
+.dropdown-div-converter button .glyphicon {
+    margin-right: 0.8em;
 }
 
 /* for bootstrap versions below 3.1 */
