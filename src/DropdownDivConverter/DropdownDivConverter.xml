@@ -11,6 +11,11 @@
             <category>General</category>
             <description>The label on the dropdown button.</description>
         </property>
+        <property key="buttonIconClass" type="string" defaultValue="" required="false">
+            <caption>Dropdown button icon class</caption>
+            <category>General</category>
+            <description>The icon class on the dropdown button, for example for Glyphicons.</description>
+        </property>
         <property key="isDropUp" type="boolean" defaultValue="false" required="true">
             <caption>Drop up</caption>
             <category>General</category>
