@@ -15,7 +15,7 @@
     padding: 5px;
 }
 
-.dropdown-div-converter.open .dropdown-menu {
+.dropdown-div-converter.open > .dropdown-menu {
     display: block;   
 }
 
