@@ -6,7 +6,7 @@
     ========================
 
     @file      : DropdownDivConverter.js
-    @version   : 1.0
+    @version   : 1.4
     @author    : Willem Gorisse
     @date      : Wed, 24 Jun 2015 15:15:32 GMT
     @copyright : 2015 Mendix
@@ -155,13 +155,26 @@ define([
                 
                 // Mendix buttons and links stop events from bubbling: set actions for internal button clicks to close the menu if needed
                 if (this.autoClose){
-                    var internalButtons = domQuery("button, a",this.dropdownMenu);
+                    var internalButtons = domQuery("button, a", this.dropdownMenu);
                     dojoArray.forEach(internalButtons, lang.hitch(this,function(node, i){
                         this.connect(node, "click", lang.hitch(this, function(e) {
                             if (this._isOpen){
                                 this._toggleMenu();   
                             }
                         }));
+                    }));
+                    // add logic to deal with listviews as they stop events from 6+
+                    var internalListviews = domQuery(".mx-listview-clickable .mx-list", this.dropdownMenu);
+                    dojoArray.forEach(internalListviews, lang.hitch(this,function(listNode, i){
+                        var listItemClick = lang.hitch(this,function(e) {
+                            if (this._isOpen){
+                                this._toggleMenu();
+                            }});
+                        listNode.addEventListener('click', listItemClick,true);
+                        // manually remove the eventlistener on destroy
+                        this.addOnDestroy(function(){
+                            listNode.removeEventListener('click', listItemClick, true)
+                        });
                     }));
                 }
                 

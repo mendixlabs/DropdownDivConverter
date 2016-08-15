@@ -34,6 +34,9 @@ It's possible to use multiple DropdownDivConverter widgets on the same page. Tha
 Since the dropdown menu is based on bootstraps dropdown button it is recommended to follow the applications Bootstrap theming rules with respect to buttons.
 
 ## Release Notes
+Appstore 1.4 release:
+- added self closing behaviour support for clickable listview (listviews with a microflow 'on click' property).
+
 Appstore 1.3 release:
 - added bootstrap glyphicon icon support: just add the "glyphicon-" classname to the settings.
 
