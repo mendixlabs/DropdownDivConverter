@@ -4,13 +4,13 @@
     <description>The DropdownDivConverter converts a Mendix (div-)container into a - Bootstrap based - dropdown menu with a button. Simply create a container in Mendix with all the content you want in the dropdown menu and the DropdownDivConverter widget as it's last child. Everything you will have added then becomes the content of the dropdown menu.</description>
 
     <icon>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAK9JREFUeNpilJWV/s8AAY2PHz9tAPL3A9kOUDFHKL0fSh8AqnEEqmkAsutBAkwMFAJGqGkMINtJ0QjTx0ANF+yHusCRRBeA9bEgBRipwAFmALKpBUBKgIDGD0DXToBxWJCiChxN0CjDZcgHJPWOGNEINPkCVOIDLs1QNXDABLVxPwFDsGkG68OakNAMwWozchgcwGUIMFAdkQxEBweolpAoSsossFwFFGAYkNwIEGAAHt5XWk5gQGoAAAAASUVORK5CYII=</icon>
-
+    
     <properties>
         <property key="buttonTitle" type="string" defaultValue="" required="false">
             <caption>Dropdown button label</caption>
             <category>General</category>
             <description>The label on the dropdown button.</description>
-        </property>
+        </property>	
         <property key="buttonGlyphicon" type="string" defaultValue="" required="false">
             <caption>Glyphicon icon</caption>
             <category>General</category>
@@ -36,32 +36,30 @@
             <category>General</category>
             <description>If set to true: clicking on the menu or it's buttons will close the dropdown menu.</description>
         </property>
-
-		<property key="closeOthers" type="boolean" defaultValue="true" required="true">
-			<caption>Close others</caption>
-			<category>General</category>
-			<description>Will the menu close others when it opens?</description>
-		</property>
-		<property key="contextObject" type="entity" allowNonPersistableEntities="true" required="false" >
-			<caption>Context object</caption>
-			<category>Context</category>
-			<description>The entity required for the microflow.</description>
-		</property>
+        <property key="closeOthers" type="boolean" defaultValue="true" required="true">
+            <caption>Close others</caption>
+            <category>General</category>
+            <description>Will the menu close others when it opens?</description>
+        </property>
+        <property key="contextObject" type="entity" allowNonPersistableEntities="true" required="false" >
+            <caption>Context object</caption>
+            <category>Context</category>
+            <description>The entity required for the microflow.</description>
+        </property>		
 		<property key="buttonEntity" type="entity" allowNonPersistableEntities="true" isPath="optional" pathType="reference" required="false" entityProperty="contextObject">
-			<caption>Entity for button text</caption>
-			<category>Context</category>
-			<description>Select the path from the context entity to the one that contains the button text. Can be the same entity.</description>
-		</property>
+            <caption>Entity for button text</caption>
+            <category>Context</category>
+            <description>Select the path from the context entity to the one that contains the button text. Can be the same entity.</description>
+        </property>
 		<property key="buttonAttribute" type="attribute" required="false" entityProperty="buttonEntity">
-			<caption>Dropdown button attribute</caption>
-			<category>Context</category>
-			<description>Optional attribute to use for the label on the dropdown button. Overrides the title property above.</description>
+            <caption>Dropdown button attribute</caption>
+            <category>Context</category>
+            <description>Optional attribute to use for the label on the dropdown button. Overrides the title property above.</description>
 			<attributeTypes>
 				<attributeType name="Enum" />
 				<attributeType name="String" />
 			</attributeTypes>
-		</property>
-				
+        </property>			
         <property key="buttonSize" type="enumeration" defaultValue="default">
             <caption>Button size</caption>
             <category>Appearance</category>
@@ -104,6 +102,6 @@
             <description>A entity driven microflow which is triggered if the main split button is clicked.</description>
             <returnType type="Object" entityProperty="contextObject" ></returnType>
         </property>
-
     </properties>
 </widget>
+
