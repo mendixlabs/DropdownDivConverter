@@ -3,26 +3,41 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Mendix 5</title>
+        <title>Claims Management</title>
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="mxclientsystem/mxui/ui/mxui.css">
-        <link rel="stylesheet" href="css/theme.css">
+        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css?{{cachebust}}">
+        <link rel="stylesheet" href="mxclientsystem/mxui/ui/mxui.css?{{cachebust}}">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,500" rel="stylesheet" type="text/css">
+		<link href="https://fonts.googleapis.com/css?family=Lato:300" rel="stylesheet" type="text/css">
+   
+        <link rel="stylesheet" href="styles/css/lib/lib.css?{{cachebust}}">
+        <link rel="stylesheet" href="styles/css/custom/custom.css?{{cachebust}}">
+
+        <!-- CONFIGURATION Web Apps based on http://taylor.fausak.me/2015/01/27/ios-8-web-apps/ -->
+
+        <!-- ICONS EXAMPLE -->
+
+        <!-- iPhone retina icon (iOS < 7) -->
+        <!-- <link href="resources/ios/icons/apple-touch-icon-precomposed-114x114.png" sizes="114x114" rel="apple-touch-icon-precomposed"> -->
+
+        <!-- STARTUP IMAGES -->
+        <!-- <link href="resources/ios/startup/apple-touch-startup-image-1496x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" rel="apple-touch-startup-image"> -->
+
     </head>
     <body dir="ltr">
         <div id="content"></div>
         <script>
             dojoConfig = {
-                isDebug: false,
-                rtlRedirect: "index-rtl.html",
-                baseUrl: "mxclientsystem/dojo/"
+                baseUrl: "mxclientsystem/dojo/",
+                cacheBust: "{{cachebust}}",
+                rtlRedirect: "index-rtl.html"
             };
         </script>
         <script>
             if (!document.cookie || !document.cookie.match(/(^|;)originURI=/gi))
                 document.cookie = "originURI=/login.html";
         </script>
-        <script src="mxclientsystem/mxui/mxui.js"></script>
+        <script src="mxclientsystem/mxui/mxui.js?{{cachebust}}"></script>
     </body>
 </html>

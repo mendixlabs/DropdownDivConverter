@@ -43,6 +43,7 @@ define([
         autoClose: "",
         splitButtonActive: "",
         splitButtonClicked:"",
+		customDivButton: false,
 
         // Internal variables. Non-primitives created in the prototype are shared between all widget instances.
         _handles: null,
@@ -101,7 +102,13 @@ define([
             var siblings = domQuery(this.domNode).siblings();
             // loop through siblings and move them inside the dropdownMenu
             dojoArray.forEach(siblings, lang.hitch(this, function(entry, i) {
-                domConstruct.place(entry,this.dropdownMenu,"last");
+				//move an element with the class "dropdown-button"
+				if (domClass.contains(entry, "dropdown-button")) {
+					domConstruct.place(entry,this.domNode,"first");
+					return;
+				} else {
+					domConstruct.place(entry,this.dropdownMenu,"last");
+				}
             }));
 
             this._renderInterface(this.startOpen,callback);
@@ -132,6 +139,11 @@ define([
                 domConstruct.destroy(this.splitButton);
             }
 
+			if (this.customDivButton) {
+				domConstruct.destroy(this.splitButton);
+				domConstruct.destroy(this.dropdownButton);
+			}
+
             this._setupEvents(callback);
         },
 
@@ -159,34 +171,32 @@ define([
                 }));
 
                 // set action for the normal dropdown button
-                this.connect(this.dropdownButton, "click", lang.hitch(this,function(e){
-                    event.stop(e);
-                    var dropdown = null;
+				var activeButton = null;
 
-					/*
-					var parentDropDown = null;
-					var parentNode = domQuery(this.domNode.parentNode).closest(".dropdown-div-converter")[0];
+				if (this.customDivButton) {
+					activeButton = domQuery(this.domNode).children(".dropdown-button")[0];
+				} else {
+					activeButton = this.dropdownButton;
+				}
 
-                    if (parentNode) {
-						parentDropDown = dijit.registry.byNode(parentNode).id;
-					}
-					*/
+				this.connect(activeButton, "click", lang.hitch(this,function(e){
+					event.stop(e);
+					var dropdown = null;
 
-                    for(dropdown in this._allDropDowns) {
+					for(dropdown in this._allDropDowns) {
 						//Don't close a parent dropdown just because a child DropdownDivConverter was clicked.
 						if (this._allDropDowns[dropdown].domNode.contains(this.domNode)) continue;
 
 						if (this._allDropDowns.hasOwnProperty(dropdown) && dropdown !== this.id){
 							if (this._allDropDowns[dropdown]._isOpen === true) {
-                                domClass.remove(this._allDropDowns[dropdown].domNode, "open");
-                                this._allDropDowns[dropdown]._isOpen = false;
-                            }
-                        }
-                    }
+								domClass.remove(this._allDropDowns[dropdown].domNode, "open");
+								this._allDropDowns[dropdown]._isOpen = false;
+							}
+						}
+					}
 
-                    this._toggleMenu();
-                }));
-
+					this._toggleMenu();
+				}));
                 // prevent default closing on dropdownMenu if needed
                 // ET 3/30/2016, replaced stopping the event with a check on the close handler to see if the click happened inside the dropdownmenu
 				// This was done to fix a bug when using a tooltip inside the dropdown
@@ -381,7 +391,7 @@ define([
             this._setButtonTypes(this.splitButton);
 
             // adjust the dropdownButtons content
-            this.dropdownButton.innerHTML = "<span class='caret'></span><span class='sr-only'>Toggle Dropdown</span";
+            this.dropdownButton.innerHTML = "<span class='caret'></span><span class='sr-only'>Toggle Dropdown</span>";
         },
 
         // Add a glyphicon to a button

@@ -6,7 +6,7 @@
     <icon>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAK9JREFUeNpilJWV/s8AAY2PHz9tAPL3A9kOUDFHKL0fSh8AqnEEqmkAsutBAkwMFAJGqGkMINtJ0QjTx0ANF+yHusCRRBeA9bEgBRipwAFmALKpBUBKgIDGD0DXToBxWJCiChxN0CjDZcgHJPWOGNEINPkCVOIDLs1QNXDABLVxPwFDsGkG68OakNAMwWozchgcwGUIMFAdkQxEBweolpAoSsossFwFFGAYkNwIEGAAHt5XWk5gQGoAAAAASUVORK5CYII=</icon>
 
     <properties>
-        <property key="buttonTitle" type="string" defaultValue="" required="false">
+		<property key="buttonTitle" type="string" defaultValue="" required="false">
             <caption>Dropdown button label</caption>
             <category>General</category>
             <description>The label on the dropdown button.</description>
@@ -61,7 +61,7 @@
 				<attributeType name="String" />
 			</attributeTypes>
 		</property>
-				
+
         <property key="buttonSize" type="enumeration" defaultValue="default">
             <caption>Button size</caption>
             <category>Appearance</category>
@@ -104,6 +104,12 @@
             <description>A entity driven microflow which is triggered if the main split button is clicked.</description>
             <returnType type="Object" entityProperty="contextObject" ></returnType>
         </property>
-
+		<property key="customDivButton" type="boolean" defaultValue="false" required="true">
+            <caption>Use custom button</caption>
+            <category>Custom button</category>
+            <description>Use a custom div on the page to define the "button" of the dropdown, instead of using the one built into the widget.
+						 If selected, you must inclue a div/button with the class "dropdown-button" as a sibling to this widget.
+			</description>
+        </property>
     </properties>
 </widget>
