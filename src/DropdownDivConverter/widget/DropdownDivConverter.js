@@ -270,7 +270,7 @@ define([
 
 			// Mendix buttons and links stop events from bubbling: set actions for internal button clicks to close the menu if needed
 			if (this.autoClose){
-				var internalButtons = domQuery("button, a, .mx-listview-clickable .mx-list",this.dropdownMenu);
+				var internalButtons = domQuery("button, a, .mx-list .mx-listview-item",this.dropdownMenu);
 				dojoArray.forEach(internalButtons, lang.hitch(this,function(node, i){
 					this._buttonHandles[i] = this.connect(node, "click", lang.hitch(this, function(e) {
 						if (this._isOpen){
