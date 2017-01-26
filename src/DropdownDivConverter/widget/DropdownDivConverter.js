@@ -60,11 +60,11 @@ define([
             this._allDropDowns[this.id] = this;
             this._isOpen = false;
         },
-        
+
         // mxui.widget._WidgetBase.update is called when context is changed or initialized. Implement to re-render and / or fetch data.
         update: function (obj, callback) {
             this._contextObj = obj;
-            
+
             this._resetSubscriptions();
             this._updateRendering(callback);
 
@@ -78,23 +78,23 @@ define([
             dojoArray.forEach(siblings, lang.hitch(this, function(entry, i) {
                 domConstruct.place(entry,this.dropdownMenu,"last");
             }));
-            
+
             this._renderInterface(this.startOpen,callback);
         },
 
         // Really render the interface, if renderAsOpen is true: render the menu in open state
         _renderInterface: function(renderAsOpen, callback) {
-            this.dropdownButton.innerHTML = this.buttonTitle + "<span class='caret'></span>";            
+            this.dropdownButton.innerHTML = this.buttonTitle + "<span class='caret'></span>";
             // if a glyphicon icon was requested and the splitButton is not wanted: add the glyphicon to the button.
             if (this.buttonGlyphicon !== '' && !this.splitButtonActive){
-                this._addGlyphicon(this.dropdownButton);   
+                this._addGlyphicon(this.dropdownButton);
             }
-            
+
             this._setButtonTypes(this.dropdownButton);
-            
+
             // implement visual settings of the widget
             if (renderAsOpen && !domClass.contains(this.domNode,"open")) {
-                domClass.add(this.domNode,"open"); 
+                domClass.add(this.domNode,"open");
                 this._isOpen = true;
             }
             if (this.isDropUp) {
@@ -103,23 +103,23 @@ define([
             if (this.isRightAligned) {
                 if (!domClass.contains(this.dropdownMenu, "dropdown-menu-right")) {
                     domClass.add(this.dropdownMenu, "dropdown-menu-right");
-                }   
+                }
             }
             if (this.splitButtonActive) {
-                this._createSplitButton();  
+                this._createSplitButton();
             } else {
                 domConstruct.destroy(this.splitButton);
             }
-            
-            this._setupEvents(callback);  
+
+            this._setupEvents(callback);
         },
-        
+
         // Attach events to HTML dom elements
         _setupEvents: function (callback) {
             // only set events one time
             if (!this._eventsSet) {
                 this._eventsSet = true;
-                
+
                 // set window click
                 this.connect(document, "click", lang.hitch(this,function(event){
                     // if a widget external click is made: close the menu if open
@@ -133,33 +133,33 @@ define([
                 this.connect(this.dropdownButton, "click", lang.hitch(this,function(e){
                     event.stop(e);
                     var dropdown = null;
-                    
+
                     for(dropdown in this._allDropDowns) {
                         if (this._allDropDowns.hasOwnProperty(dropdown) && dropdown !== this.id){
                             if (this._allDropDowns[dropdown]._isOpen === true) {
                                 domClass.remove(this._allDropDowns[dropdown].domNode, "open");
                                 this._allDropDowns[dropdown]._isOpen = false;
                             }
-                        }         
+                        }
                     }
-                    
+
                     this._toggleMenu();
                 }));
-                
+
                 // prevent default closing on dropdownMenu if needed
                 if (!this.autoClose){
                     this.connect(this.dropdownMenu, "click", lang.hitch(this,function(e) {
                         event.stop(e);
                     }));
                 }
-                
+
                 // Mendix buttons and links stop events from bubbling: set actions for internal button clicks to close the menu if needed
                 if (this.autoClose){
                     var internalButtons = domQuery("button, a", this.dropdownMenu);
                     dojoArray.forEach(internalButtons, lang.hitch(this,function(node, i){
                         this.connect(node, "click", lang.hitch(this, function(e) {
                             if (this._isOpen){
-                                this._toggleMenu();   
+                                this._toggleMenu();
                             }
                         }));
                     }));
@@ -177,21 +177,20 @@ define([
                         });
                     }));
                 }
-                
+
                 // set the action for the possible split group button
                 if (this.splitButtonActive){
                     this.connect(this.splitButton, "click", lang.hitch(this, function(e){
-                        
+
                         // if a microflow is checked and a contextobject is defined
                         if (this.splitButtonClicked !== "" && this._contextObj) {
                             // do we have a contextObj for the microflow?
-                            
+
                             var id = this._contextObj.getGuid();
 
-                            mx.data.action({
+                            mx.ui.action(this.splitButtonClicked, {
                                 params          : {
                                     applyto     : "selection",
-                                    actionname  : this.splitButtonClicked,
                                     guids       : [id]
                                 },
                                 callback        : function(success) {
@@ -199,14 +198,13 @@ define([
                                 },
                                 error           : function(error) {
                                     // if there was an error
-                                } 
+                                }
                             }, this);
                         } else if (this.simpleSplitButtonClicked !== "") {
 
-                            mx.data.action({
+                            mx.ui.action(this.simpleSplitButtonClicked, {
                                 params          : {
-                                    applyto     : "none",
-                                    actionname  : this.simpleSplitButtonClicked
+                                    applyto     : "none"
                                 },
                                 callback        : function(success) {
                                     // if success was true, the microflow was indeed followed through
@@ -216,7 +214,7 @@ define([
                                 }
                             }, this);
                         }
-                        
+
                     }));
                 }
 
@@ -225,7 +223,7 @@ define([
                 callback();
             }
         },
-        
+
         // toggle dropdown state
         _toggleMenu: function() {
             if (domClass.contains(this.domNode,"open")){
@@ -236,17 +234,17 @@ define([
                 this._isOpen = true;
             }
         },
-        
+
         // Set button types: size and type
         _setButtonTypes: function(button){
             // first set the button type
             var typeClassName = "btn-"+this.buttonType,
                 sizeClassName;
-            
+
             if (!domClass.contains(button,typeClassName)){
                 domClass.add(button,typeClassName);
             }
-            
+
             switch(this.buttonSize) {
                 case "default":
                     // default buttonsize is allready implemented
@@ -255,31 +253,31 @@ define([
                     sizeClassName = "btn-"+this.buttonSize;
                     if (!domClass.contains(button,sizeClassName)){
                         domClass.add(button,sizeClassName);
-                    }                    
+                    }
             }
         },
-        
+
         // Transform the dropdown into a dropup
         _transformToDropUp: function() {
             if (!domClass.contains(this.domNode,"dropup")){
                 domClass.add(this.domNode,"dropup");
             }
         },
-        
-        // Create a split button group 
+
+        // Create a split button group
         _createSplitButton: function() {
             // create the new split button
             this.splitButton.innerHTML = this.buttonTitle;
             // if a glyphicon icon was requested: add the glyphicon to the button.
             if (this.buttonGlyphicon !== ''){
-                this._addGlyphicon(this.splitButton);   
+                this._addGlyphicon(this.splitButton);
             }
             this._setButtonTypes(this.splitButton);
-            
+
             // adjust the dropdownButtons content
             this.dropdownButton.innerHTML = "<span class='caret'></span><span class='sr-only'>Toggle Dropdown</span";
         },
-        
+
         // Add a glyphicon to a button
         _addGlyphicon: function(buttonObject) {
             buttonObject.innerHTML = "<span class='glyphicon " + this.buttonGlyphicon + "'></span>" + buttonObject.innerHTML;
@@ -300,7 +298,7 @@ define([
                 this._handles = [];
             }
 
-            // When a mendix object exists create subscribtions. 
+            // When a mendix object exists create subscribtions.
             if (this._contextObj) {
 
                 _objectHandle = this.subscribe({

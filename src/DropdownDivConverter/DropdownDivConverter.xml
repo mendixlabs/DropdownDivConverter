@@ -4,7 +4,7 @@
     <description>The DropdownDivConverter converts a Mendix (div-)container into a - Bootstrap based - dropdown menu with a button. Simply create a container in Mendix with all the content you want in the dropdown menu and the DropdownDivConverter widget as it's last child. Everything you will have added then becomes the content of the dropdown menu.</description>
 
     <icon>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAK9JREFUeNpilJWV/s8AAY2PHz9tAPL3A9kOUDFHKL0fSh8AqnEEqmkAsutBAkwMFAJGqGkMINtJ0QjTx0ANF+yHusCRRBeA9bEgBRipwAFmALKpBUBKgIDGD0DXToBxWJCiChxN0CjDZcgHJPWOGNEINPkCVOIDLs1QNXDABLVxPwFDsGkG68OakNAMwWozchgcwGUIMFAdkQxEBweolpAoSsossFwFFGAYkNwIEGAAHt5XWk5gQGoAAAAASUVORK5CYII=</icon>
-    
+
     <properties>
         <property key="buttonTitle" type="string" defaultValue="" required="false">
             <caption>Dropdown button label</caption>
@@ -78,7 +78,7 @@
             <description>A entity driven microflow which is triggered if the main split button is clicked.</description>
             <returnType type="Object" entityProperty="contextObject" ></returnType>
         </property>
-        <property key="contextObject" type="entity" required="false">
+        <property key="contextObject" type="entity" required="false" allowNonPersistableEntities="true">
             <caption>Context object</caption>
             <category>Split button</category>
             <description>The entity required for the microflow.</description>
@@ -86,4 +86,3 @@
 
     </properties>
 </widget>
-

@@ -6,9 +6,9 @@
         <title>Mendix 5</title>
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="mxclientsystem/mxui/ui/mxui.css">
-        <link rel="stylesheet" href="css/theme.css">
+        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css?{{cachebust}}">
+        <link rel="stylesheet" href="mxclientsystem/mxui/ui/mxui.css?{{cachebust}}">
+        <link rel="stylesheet" href="css/theme.css?{{cachebust}}">
     </head>
     <body dir="ltr">
         <div id="content"></div>
@@ -16,7 +16,8 @@
             dojoConfig = {
                 isDebug: false,
                 rtlRedirect: "index-rtl.html",
-                baseUrl: "mxclientsystem/dojo/"
+                baseUrl: "mxclientsystem/dojo/",
+                cacheBust: "{{cachebust}}",
             };
         </script>
         <script>
