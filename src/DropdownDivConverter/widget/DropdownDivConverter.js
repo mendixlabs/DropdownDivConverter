@@ -188,11 +188,9 @@ define([
 
                             var id = this._contextObj.getGuid();
 
-                            mx.data.action({
+                            mx.ui.action(this.splitButtonClicked, {
                                 params          : {
                                     applyto     : "selection",
-                                    actionname  : this.splitButtonClicked,
-                                    origin      : this.mxform,
                                     guids       : [id]
                                 },
                                 callback        : function(success) {
@@ -204,11 +202,9 @@ define([
                             }, this);
                         } else if (this.simpleSplitButtonClicked !== "") {
 
-                            mx.data.action({
+                            mx.ui.action(this.simpleSplitButtonClicked, {
                                 params          : {
-                                    applyto     : "none",
-                                    actionname  : this.simpleSplitButtonClicked,
-                                    origin      : this.mxform
+                                    applyto     : "none"
                                 },
                                 callback        : function(success) {
                                     // if success was true, the microflow was indeed followed through
