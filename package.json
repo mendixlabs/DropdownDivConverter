@@ -1,0 +1,37 @@
+{
+  "name": "DropdownDivConverter",
+  "version": "1.5.0",
+  "description": "The DropdownDivConverter converts a Mendix (div-)container into a - Bootstrap based - dropdown menu with a button. Simply create a container in Mendix with all the content you want in the dropdown menu and the DropdownDivConverter widget as it's last child. Everything you will have added then becomes the content of the dropdown menu.",
+  "license": "Apache 2",
+  "author": "Willem Gorisse",
+  "private": true,
+  "dependencies": {
+  },
+  "devDependencies": {
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-if": "^2.0.1",
+    "gulp-intercept": "^0.1.0",
+    "gulp-json-transform": "^0.4.2",
+    "gulp-newer": "^1.3.0",
+    "gulp-util": "^3.0.7",
+    "gulp-zip": "^3.2.0",
+    "widgetbuilder-gulp-helper": "https://github.com/JelteMX/widgetbuilder-gulp-helper/archive/1.0.1.tar.gz",
+    "yargs": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=5"
+  },
+  "generatorVersion": "2.0.1",
+  "paths": {
+    "testProjectFolder": "./test/",
+    "testProjectFileName": "Test.mpr"
+  },
+  "scripts": {
+    "build": "node ./node_modules/gulp/bin/gulp build",
+    "version": "node ./node_modules/gulp/bin/gulp version",
+    "icon": "node ./node_modules/gulp/bin/gulp icon",
+    "folders": "node ./node_modules/gulp/bin/gulp folders",
+    "modeler": "node ./node_modules/gulp/bin/gulp modeler"
+  }
+}

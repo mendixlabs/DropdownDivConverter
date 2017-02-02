@@ -9,7 +9,7 @@
         <property key="buttonTitle" type="string" defaultValue="" required="false">
             <caption>Dropdown button label</caption>
             <category>General</category>
-            <description>The label on the dropdown button.</description>
+            <description>The label on the dropdown button. Note, can be overridden on the Data Source tab</description>
         </property>
         <property key="buttonGlyphicon" type="string" defaultValue="" required="false">
             <caption>Glyphicon icon</caption>
@@ -61,6 +61,19 @@
                 <enumerationValue key="link">link</enumerationValue>
             </enumerationValues>
         </property>
+        <property key="contextObject" type="entity" required="false" allowNonPersistableEntities="true">
+            <caption>Context object</caption>
+            <category>Data Source</category>
+            <description>The entity required for the microflow or dynamic label</description>
+        </property>
+        <property key="dynamicButtonTitleAttribute" type="attribute" entityProperty="contextObject" required="false">
+            <caption>Dynamic button label</caption>
+            <category>Data Source</category>
+            <description>The attribute that sets the label on the dropdown button. If used, the static value on the general tab will be overridden.</description>
+            <attributeTypes>
+                <attributeType name="String" />
+            </attributeTypes>
+        </property>
         <property key="splitButtonActive" type="boolean" defaultValue="false" required="true">
             <caption>Split button dropdown</caption>
             <category>Split button</category>
@@ -75,15 +88,9 @@
         <property key="splitButtonClicked" type="microflow" required="false" defaultValue="" entityProperty="contextObject">
             <caption>Microflow</caption>
             <category>Split button</category>
-            <description>A entity driven microflow which is triggered if the main split button is clicked.</description>
+            <description>A entity driven microflow which is triggered if the main split button is clicked. Note that the Context Object from the Data Source tab is required.</description>
             <returnType type="Object" entityProperty="contextObject" ></returnType>
         </property>
-        <property key="contextObject" type="entity" required="false">
-            <caption>Context object</caption>
-            <category>Split button</category>
-            <description>The entity required for the microflow.</description>
-        </property>
-
     </properties>
 </widget>
 

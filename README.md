@@ -34,6 +34,12 @@ It's possible to use multiple DropdownDivConverter widgets on the same page. Tha
 Since the dropdown menu is based on bootstraps dropdown button it is recommended to follow the applications Bootstrap theming rules with respect to buttons.
 
 ## Release Notes
+Appstore 1.5 release:
+- updated closing behaviour to be compatible with other similar custom widget closing constructions
+- updated to enable Mx 6.10+ compatibility
+- updated to support nesting a dropdown in a dropdown (note: set the outer one to non self-closing)
+- updated the testproject to higher version. Note that this release will therefore not be tested on 5.14.1 anymore.
+
 Appstore 1.4 release:
 - added self closing behaviour support for clickable listview (listviews with a microflow 'on click' property).
 

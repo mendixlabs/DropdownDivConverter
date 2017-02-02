@@ -10,12 +10,12 @@
     margin-left:0;   
 }
 
-.dropdown-div-converter .dropdown-menu {
+.dropdown-div-converter > .dropdown-menu {
     display: none;
     padding: 5px;
 }
 
-.dropdown-div-converter.open .dropdown-menu {
+.dropdown-div-converter.open > .dropdown-menu {
     display: block;   
 }
 

@@ -33,6 +33,7 @@ define([
 
         // Parameters configured in the Modeler.
         buttonTitle: "",
+        dynamicButtonTitleAttribute: "",
         buttonGlyphicon: "",
         isDropUp: "",
         isRightAligned: "",
@@ -48,6 +49,8 @@ define([
         _allDropDowns: {},
         _eventsSet: null,
         _isOpen: null,
+        _buttonLabel: null,
+        _dynamicLabel: false,
 
         // dojo.declare.constructor is called to construct the widget instance. Implement to initialize non-primitive properties.
         constructor: function () {
@@ -68,6 +71,11 @@ define([
             this._resetSubscriptions();
             this._updateRendering(callback);
 
+            // preset the label
+            this._buttonlabel = this.buttonTitle;
+            if (this.dynamicButtonTitle != "") {
+                this._dynamicLabel = true;
+            }
         },
 
         // Reordering the interface: selecting the siblings and putting them in the dropdown menu
@@ -106,6 +114,7 @@ define([
                 }   
             }
             if (this.splitButtonActive) {
+                console.log("createing split button call: "+ this._buttonLabel)
                 this._createSplitButton();  
             } else {
                 domConstruct.destroy(this.splitButton);
@@ -123,26 +132,19 @@ define([
                 // set window click
                 this.connect(document, "click", lang.hitch(this,function(event){
                     // if a widget external click is made: close the menu if open
-                    if(domClass.contains(this.domNode,"open")){
-                        domClass.remove(this.domNode,"open");
-                        this._isOpen = false;
-                    }
+                    if (!this.domNode.contains(event.target)) {
+                        if(domClass.contains(this.domNode,"open")){
+                            domClass.remove(this.domNode,"open");
+                            this._isOpen = false;
+                            console.log("closing menu by document click;");
+                        } 
+                    }         
                 }));
 
                 // set action for the normal dropdown button
                 this.connect(this.dropdownButton, "click", lang.hitch(this,function(e){
-                    event.stop(e);
-                    var dropdown = null;
-                    
-                    for(dropdown in this._allDropDowns) {
-                        if (this._allDropDowns.hasOwnProperty(dropdown) && dropdown !== this.id){
-                            if (this._allDropDowns[dropdown]._isOpen === true) {
-                                domClass.remove(this._allDropDowns[dropdown].domNode, "open");
-                                this._allDropDowns[dropdown]._isOpen = false;
-                            }
-                        }         
-                    }
-                    
+                    //event.stop(e);
+                    var dropdown = null;                    
                     this._toggleMenu();
                 }));
                 
@@ -155,9 +157,17 @@ define([
                 
                 // Mendix buttons and links stop events from bubbling: set actions for internal button clicks to close the menu if needed
                 if (this.autoClose){
+                    this.connect(this.dropdownMenu, 'click', lang.hitch(this,function(e){
+                        console.log("running close method via dropdown menu");
+                        if (this._isOpen) {
+                            this._toggleMenu();
+                        }
+                    }));
+
                     var internalButtons = domQuery("button, a", this.dropdownMenu);
                     dojoArray.forEach(internalButtons, lang.hitch(this,function(node, i){
                         this.connect(node, "click", lang.hitch(this, function(e) {
+                            console.log("triggering close method via internal button or a");
                             if (this._isOpen){
                                 this._toggleMenu();   
                             }
@@ -167,6 +177,7 @@ define([
                     var internalListviews = domQuery(".mx-listview-clickable .mx-list", this.dropdownMenu);
                     dojoArray.forEach(internalListviews, lang.hitch(this,function(listNode, i){
                         var listItemClick = lang.hitch(this,function(e) {
+                            console.log("triggering close method via listitem click");
                             if (this._isOpen){
                                 this._toggleMenu();
                             }});
@@ -188,10 +199,9 @@ define([
                             
                             var id = this._contextObj.getGuid();
 
-                            mx.data.action({
+                            mx.ui.action(this.splitButtonClicked, {
                                 params          : {
                                     applyto     : "selection",
-                                    actionname  : this.splitButtonClicked,
                                     guids       : [id]
                                 },
                                 callback        : function(success) {
@@ -203,10 +213,9 @@ define([
                             }, this);
                         } else if (this.simpleSplitButtonClicked !== "") {
 
-                            mx.data.action({
+                            mx.ui.action(this.simpleSplitButtonClicked, {
                                 params          : {
-                                    applyto     : "none",
-                                    actionname  : this.simpleSplitButtonClicked
+                                    applyto     : "none"
                                 },
                                 callback        : function(success) {
                                     // if success was true, the microflow was indeed followed through
@@ -269,6 +278,7 @@ define([
         // Create a split button group 
         _createSplitButton: function() {
             // create the new split button
+            console.log("creating split button :" + this._buttonLabel);
             this.splitButton.innerHTML = this.buttonTitle;
             // if a glyphicon icon was requested: add the glyphicon to the button.
             if (this.buttonGlyphicon !== ''){
