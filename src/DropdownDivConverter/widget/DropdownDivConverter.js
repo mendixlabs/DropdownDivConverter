@@ -67,15 +67,16 @@ define([
         // mxui.widget._WidgetBase.update is called when context is changed or initialized. Implement to re-render and / or fetch data.
         update: function (obj, callback) {
             this._contextObj = obj;
-            
-            this._resetSubscriptions();
-            this._updateRendering(callback);
 
             // preset the label
-            this._buttonlabel = this.buttonTitle;
-            if (this.dynamicButtonTitle != "") {
+            this._buttonLabel = this.buttonTitle;
+            if (this.dynamicButtonTitle !== "" && this._contextObj !== null) {
                 this._dynamicLabel = true;
+                this._buttonLabel = this._contextObj.get(this.dynamicButtonTitleAttribute);
             }
+
+            this._resetSubscriptions();
+            this._updateRendering(callback);
         },
 
         // Reordering the interface: selecting the siblings and putting them in the dropdown menu
@@ -92,7 +93,7 @@ define([
 
         // Really render the interface, if renderAsOpen is true: render the menu in open state
         _renderInterface: function(renderAsOpen, callback) {
-            this.dropdownButton.innerHTML = this.buttonTitle + "<span class='caret'></span>";            
+            this.dropdownButton.innerHTML = this._buttonLabel + "<span class='caret'></span>";            
             // if a glyphicon icon was requested and the splitButton is not wanted: add the glyphicon to the button.
             if (this.buttonGlyphicon !== '' && !this.splitButtonActive){
                 this._addGlyphicon(this.dropdownButton);   
@@ -114,7 +115,6 @@ define([
                 }   
             }
             if (this.splitButtonActive) {
-                console.log("createing split button call: "+ this._buttonLabel)
                 this._createSplitButton();  
             } else {
                 domConstruct.destroy(this.splitButton);
@@ -279,7 +279,7 @@ define([
         _createSplitButton: function() {
             // create the new split button
             console.log("creating split button :" + this._buttonLabel);
-            this.splitButton.innerHTML = this.buttonTitle;
+            this.splitButton.innerHTML = this._buttonLabel;
             // if a glyphicon icon was requested: add the glyphicon to the button.
             if (this.buttonGlyphicon !== ''){
                 this._addGlyphicon(this.splitButton);   
@@ -288,6 +288,11 @@ define([
             
             // adjust the dropdownButtons content
             this.dropdownButton.innerHTML = "<span class='caret'></span><span class='sr-only'>Toggle Dropdown</span";
+        },
+
+        // set the label of the button
+        _setButtonLabel: function(){
+
         },
         
         // Add a glyphicon to a button
