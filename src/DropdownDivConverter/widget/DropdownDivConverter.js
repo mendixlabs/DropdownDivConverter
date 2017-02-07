@@ -42,8 +42,6 @@ define([
         splitButtonActive: "",
         splitButtonClicked:"",
 
-        // Internal variables. Non-primitives created in the prototype are shared between all widget instances.
-        _handles: null,
         _contextObj: null,
         _alertDiv: null,
         _allDropDowns: {},
@@ -54,7 +52,6 @@ define([
 
         // dojo.declare.constructor is called to construct the widget instance. Implement to initialize non-primitive properties.
         constructor: function () {
-            this._handles = [];
             this._eventsSet = false;
         },
 
@@ -70,7 +67,7 @@ define([
 
             // preset the label
             this._buttonLabel = this.buttonTitle;
-            if (this.dynamicButtonTitle !== "" && this._contextObj !== null) {
+            if (this.dynamicButtonTitleAttribute !== "" && this._contextObj !== null) {
                 this._dynamicLabel = true;
                 this._buttonLabel = this._contextObj.get(this.dynamicButtonTitleAttribute);
             }
@@ -95,7 +92,7 @@ define([
         _renderInterface: function(renderAsOpen, callback) {
             this.dropdownButton.innerHTML = this._buttonLabel + "<span class='caret'></span>";            
             // if a glyphicon icon was requested and the splitButton is not wanted: add the glyphicon to the button.
-            if (this.buttonGlyphicon !== '' && !this.splitButtonActive){
+            if (this.buttonGlyphicon !== "" && !this.splitButtonActive){
                 this._addGlyphicon(this.dropdownButton);   
             }
             
@@ -136,7 +133,6 @@ define([
                         if(domClass.contains(this.domNode,"open")){
                             domClass.remove(this.domNode,"open");
                             this._isOpen = false;
-                            console.log("closing menu by document click;");
                         } 
                     }         
                 }));
@@ -158,7 +154,6 @@ define([
                 // Mendix buttons and links stop events from bubbling: set actions for internal button clicks to close the menu if needed
                 if (this.autoClose){
                     this.connect(this.dropdownMenu, 'click', lang.hitch(this,function(e){
-                        console.log("running close method via dropdown menu");
                         if (this._isOpen) {
                             this._toggleMenu();
                         }
@@ -167,7 +162,6 @@ define([
                     var internalButtons = domQuery("button, a", this.dropdownMenu);
                     dojoArray.forEach(internalButtons, lang.hitch(this,function(node, i){
                         this.connect(node, "click", lang.hitch(this, function(e) {
-                            console.log("triggering close method via internal button or a");
                             if (this._isOpen){
                                 this._toggleMenu();   
                             }
@@ -177,7 +171,6 @@ define([
                     var internalListviews = domQuery(".mx-listview-clickable .mx-list", this.dropdownMenu);
                     dojoArray.forEach(internalListviews, lang.hitch(this,function(listNode, i){
                         var listItemClick = lang.hitch(this,function(e) {
-                            console.log("triggering close method via listitem click");
                             if (this._isOpen){
                                 this._toggleMenu();
                             }});
@@ -192,7 +185,13 @@ define([
                 // set the action for the possible split group button
                 if (this.splitButtonActive){
                     this.connect(this.splitButton, "click", lang.hitch(this, function(e){
-                        
+                        // if the widget is set to autoclose: close the dropdown menu
+                        if (this.autoClose) {
+                            if (this._isOpen) {
+                                this._toggleMenu();
+                            }
+                        }
+
                         // if a microflow is checked and a contextobject is defined
                         if (this.splitButtonClicked !== "" && this._contextObj) {
                             // do we have a contextObj for the microflow?
@@ -277,22 +276,16 @@ define([
         
         // Create a split button group 
         _createSplitButton: function() {
-            // create the new split button
-            console.log("creating split button :" + this._buttonLabel);
+            // create the new split button label
             this.splitButton.innerHTML = this._buttonLabel;
             // if a glyphicon icon was requested: add the glyphicon to the button.
-            if (this.buttonGlyphicon !== ''){
+            if (this.buttonGlyphicon !== ""){
                 this._addGlyphicon(this.splitButton);   
             }
             this._setButtonTypes(this.splitButton);
             
             // adjust the dropdownButtons content
             this.dropdownButton.innerHTML = "<span class='caret'></span><span class='sr-only'>Toggle Dropdown</span";
-        },
-
-        // set the label of the button
-        _setButtonLabel: function(){
-
         },
         
         // Add a glyphicon to a button
@@ -302,44 +295,15 @@ define([
 
         // Reset subscriptions.
         _resetSubscriptions: function () {
-            var _objectHandle = null,
-                _attrHandle = null,
-                _validationHandle = null;
-
-            // Release handles on previous object, if any.
-            if (this._handles) {
-                dojoArray.forEach(this._handles, function(handle, i){
-                    mx.data.unsubscribe(handle);
-                });
-
-                this._handles = [];
-            }
-
-            // When a mendix object exists create subscribtions. 
+            this.unsubscribeAll();
             if (this._contextObj) {
 
-                _objectHandle = this.subscribe({
+                this.subscribe({
                     guid: this._contextObj.getGuid(),
                     callback: lang.hitch(this, function (guid) {
                         this._updateRendering();
                     })
                 });
-
-                _attrHandle = this.subscribe({
-                    guid: this._contextObj.getGuid(),
-                    attr: this.backgroundColor,
-                    callback: lang.hitch(this, function (guid, attr, attrValue) {
-                        this._updateRendering();
-                    })
-                });
-
-                _validationHandle = this.subscribe({
-                    guid: this._contextObj.getGuid(),
-                    val: true,
-                    callback: lang.hitch(this, this._handleValidation)
-                });
-
-                this._handles = [_objectHandle, _attrHandle, _validationHandle];
             }
         }
     });
