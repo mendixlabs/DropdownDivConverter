@@ -35,10 +35,12 @@ Since the dropdown menu is based on bootstraps dropdown button it is recommended
 
 ## Release Notes
 Appstore 1.5 release:
-- updated closing behaviour to be compatible with other similar custom widget closing constructions
-- added closing behaviour to split button click
-- updated to enable Mx 6.10+ compatibility
-- updated to support nesting a dropdown in a dropdown (note: set the outer one to non self-closing)
+- added dynamic titles.
+- updated closing behaviour to be compatible with other similar custom widget closing constructions.
+- added closing behaviour to split button click.
+- updated to enable Mx 6.10+ compatibility.
+- updated to support nesting a dropdown in a dropdown (note: set the outer one to non self-closing).
+- added the bootstrap link button variant.
 - updated the testproject to higher version. Note that this release will therefore not be tested on 5.14.1 anymore.
 
 Appstore 1.4 release:

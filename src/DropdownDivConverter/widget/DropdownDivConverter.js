@@ -6,9 +6,9 @@
     ========================
 
     @file      : DropdownDivConverter.js
-    @version   : 1.4
+    @version   : 1.5
     @author    : Willem Gorisse
-    @date      : Wed, 24 Jun 2015 15:15:32 GMT
+    @date      : Wed, 4 Jul 2017 15:15:32 GMT
     @copyright : 2015 Mendix
     @license   : Apache Licence 2.0
 
@@ -66,10 +66,9 @@ define([
             this._contextObj = obj;
 
             // preset the label
-            this._buttonLabel = this.buttonTitle;
+            
             if (this.dynamicButtonTitleAttribute !== "" && this._contextObj !== null) {
                 this._dynamicLabel = true;
-                this._buttonLabel = this._contextObj.get(this.dynamicButtonTitleAttribute);
             }
 
             this._resetSubscriptions();
@@ -90,6 +89,7 @@ define([
 
         // Really render the interface, if renderAsOpen is true: render the menu in open state
         _renderInterface: function(renderAsOpen, callback) {
+            this._updateButtonTitle();
             this.dropdownButton.innerHTML = this._buttonLabel + "<span class='caret'></span>";            
             // if a glyphicon icon was requested and the splitButton is not wanted: add the glyphicon to the button.
             if (this.buttonGlyphicon !== "" && !this.splitButtonActive){
@@ -286,6 +286,19 @@ define([
             
             // adjust the dropdownButtons content
             this.dropdownButton.innerHTML = "<span class='caret'></span><span class='sr-only'>Toggle Dropdown</span";
+        },
+
+        // update the dynamic button title
+        _updateButtonTitle: function() {
+            this._buttonLabel = this.buttonTitle;
+            if (this._dynamicLabel) {
+                this._buttonLabel = this._contextObj.get(this.dynamicButtonTitleAttribute);
+            }
+            
+            //if (this.dynamicButtonTitleAttribute !== "" && this._contextObj !== null) {
+             //   this._dynamicLabel = true;
+              //  this._buttonLabel = this._contextObj.get(this.dynamicButtonTitleAttribute);
+            //}  
         },
         
         // Add a glyphicon to a button
