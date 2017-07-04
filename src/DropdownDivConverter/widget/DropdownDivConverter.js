@@ -294,11 +294,6 @@ define([
             if (this._dynamicLabel) {
                 this._buttonLabel = this._contextObj.get(this.dynamicButtonTitleAttribute);
             }
-            
-            //if (this.dynamicButtonTitleAttribute !== "" && this._contextObj !== null) {
-             //   this._dynamicLabel = true;
-              //  this._buttonLabel = this._contextObj.get(this.dynamicButtonTitleAttribute);
-            //}  
         },
         
         // Add a glyphicon to a button
