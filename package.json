@@ -5,8 +5,7 @@
   "license": "Apache 2",
   "author": "Willem Gorisse",
   "private": true,
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "del": "^2.2.2",
     "gulp": "^3.9.1",
