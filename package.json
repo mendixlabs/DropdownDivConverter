@@ -1,6 +1,6 @@
 {
   "name": "DropdownDivConverter",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "The DropdownDivConverter converts a Mendix (div-)container into a - Bootstrap based - dropdown menu with a button. Simply create a container in Mendix with all the content you want in the dropdown menu and the DropdownDivConverter widget as it's last child. Everything you will have added then becomes the content of the dropdown menu.",
   "license": "Apache 2",
   "author": "Willem Gorisse",
