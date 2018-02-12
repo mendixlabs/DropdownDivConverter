@@ -2,6 +2,7 @@ define([
     "dojo/_base/declare",
     "mxui/widget/_WidgetBase",
     "dijit/_TemplatedMixin",
+    "mxui/dom",
     "dojo/query",
     "dojo/dom-class",
     "dojo/dom-construct",
@@ -10,7 +11,7 @@ define([
     "dojo/_base/event",
     "dojo/text!DropdownDivConverter/widget/template/DropdownDivConverter.html",
     "dojo/NodeList-traverse"
-], function (declare, _WidgetBase, _TemplatedMixin, domQuery, domClass, domConstruct, dojoArray, lang, event, widgetTemplate) {
+], function (declare, _WidgetBase, _TemplatedMixin, dom, domQuery, domClass, domConstruct, dojoArray, lang, event, widgetTemplate) {
     "use strict";
 
     /*
@@ -61,6 +62,7 @@ define([
             this._isOpen = false;
         },
 
+        // mxui.widget._WidgetBase.update is called when context is changed or initialized. Implement to re-render and / or fetch data.
         update: function (obj, callback) {
             this._contextObj = obj;
 
@@ -81,13 +83,13 @@ define([
                 domConstruct.place(entry,this.dropdownMenu,"last");
             }));
 
-            this._renderInterface(this.startOpen, callback);
+            this._renderInterface(this.startOpen,callback);
         },
 
         // Really render the interface, if renderAsOpen is true: render the menu in open state
         _renderInterface: function(renderAsOpen, callback) {
             this._updateButtonTitle();
-            this.dropdownButton.innerHTML = this._buttonLabel + "<span class=\"caret\"></span>";
+            this.dropdownButton.innerHTML = dom.escapeString(this._buttonLabel) + "<span class='caret'></span>";
             // if a glyphicon icon was requested and the splitButton is not wanted: add the glyphicon to the button.
             if (this.buttonGlyphicon !== "" && !this.splitButtonActive){
                 this._addGlyphicon(this.dropdownButton);
@@ -196,6 +198,12 @@ define([
                                 params          : {
                                     applyto     : "selection",
                                     guids       : [id]
+                                },
+                                callback        : function(success) {
+                                    // if success was true, the microflow was indeed followed through
+                                },
+                                error           : function(error) {
+                                    // if there was an error
                                 }
                             }, this);
                         } else if (this.simpleSplitButtonClicked !== "") {
@@ -225,20 +233,20 @@ define([
         // Set button types: size and type
         _setButtonTypes: function(button){
             // first set the button type
-            var typeClassName = "btn-" + this.buttonType;
+            var typeClassName = "btn-"+this.buttonType,
+                sizeClassName;
 
             if (!domClass.contains(button,typeClassName)){
                 domClass.add(button,typeClassName);
             }
 
             if (this.buttonSize === "default") {
-              // default buttonsize is allready implemented
-              return;
+                return;
             }
 
-            var sizeClassName = "btn-" + this.buttonSize;
-            if (!domClass.contains(button,sizeClassName)){
-                domClass.add(button,sizeClassName);
+            sizeClassName = "btn-" + this.buttonSize;
+            if (!domClass.contains(button, sizeClassName)) {
+                domClass.add(button, sizeClassName);
             }
         },
 
@@ -252,7 +260,7 @@ define([
         // Create a split button group
         _createSplitButton: function() {
             // create the new split button label
-            this.splitButton.innerHTML = this._buttonLabel;
+            this.splitButton.innerHTML = dom.escapeString(this._buttonLabel);
             // if a glyphicon icon was requested: add the glyphicon to the button.
             if (this.buttonGlyphicon !== ""){
                 this._addGlyphicon(this.splitButton);
@@ -273,7 +281,7 @@ define([
 
         // Add a glyphicon to a button
         _addGlyphicon: function(buttonObject) {
-            buttonObject.innerHTML = "<span class=\"glyphicon " + this.buttonGlyphicon + "\"></span>" + buttonObject.innerHTML;
+            buttonObject.innerHTML = "<span class='glyphicon " + dom.escapeString(this.buttonGlyphicon) + "'></span>" + buttonObject.innerHTML;
         },
 
         // Reset subscriptions.
