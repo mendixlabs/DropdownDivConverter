@@ -275,7 +275,7 @@ define([
         _updateButtonTitle: function() {
             this._buttonLabel = this.buttonTitle;
             if (this._dynamicLabel) {
-                if (this._contextObj.isEnum(this.dynamicButtonTitleAttribute) && ) {
+                if (this._contextObj.isEnum(this.dynamicButtonTitleAttribute)) {
                     this._buttonLabel = this._contextObj.getEnumCaption(this.dynamicButtonTitleAttribute, this._contextObj.get(this.dynamicButtonTitleAttribute));
                 } else {
                     this._buttonLabel = this._contextObj.get(this.dynamicButtonTitleAttribute);
