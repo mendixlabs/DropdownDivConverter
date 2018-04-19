@@ -153,13 +153,16 @@ define([
                 // Mendix buttons and links stop events from bubbling: set actions for internal button clicks to close the menu if needed
                 if (this.autoClose){
                     this.connect(this.dropdownMenu, "click", lang.hitch(this,function(e){
-                        if (this._isOpen) {
+                        if (this._isOpen && !this._isListViewSearchItem(e.srcElement)) {
                             this._toggleMenu();
                         }
                     }));
 
                     var internalButtons = domQuery("button, a", this.dropdownMenu);
-                    dojoArray.forEach(internalButtons, lang.hitch(this,function(node){
+                    var listViewExcluded = dojoArray.filter(internalButtons, lang.hitch(this, function(item) {
+                        return !this._isListViewSearchItem(item);
+                    }));
+                    dojoArray.forEach(listViewExcluded, lang.hitch(this,function(node){
                         this.connect(node, "click", lang.hitch(this, function(e) {
                             if (this._isOpen){
                                 this._toggleMenu();
@@ -302,8 +305,14 @@ define([
             if (cb && typeof cb === "function") {
                 cb();
             }
+        },
+
+        _isListViewSearchItem: function(element) {
+            return domQuery(element).parents(".mx-listview-searchbar").length > 0
         }
+
     });
 });
 
 require(["DropdownDivConverter/widget/DropdownDivConverter"]);
+
