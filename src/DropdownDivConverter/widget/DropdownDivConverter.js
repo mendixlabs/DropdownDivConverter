@@ -1,34 +1,38 @@
-/*jslint white:true, nomen: true, plusplus: true */
-/*global mx, define, require, browser, devel, console, document, jQuery */
-/*mendix */
-/*
-    DropdownDivConverter
-    ========================
-
-    @file      : DropdownDivConverter.js
-    @version   : 1.5
-    @author    : Willem Gorisse
-    @date      : Wed, 4 Jul 2017 15:15:32 GMT
-    @copyright : 2015 Mendix
-    @license   : Apache Licence 2.0
-
-    Documentation
-    ========================
-    The DropdownDivConverter converts a Mendix (div-)container into a - Bootstrap based - dropdown menu with a button. Simply create a container in Mendix with all the content you want in the dropdown menu and the DropdownDivConverter widget as it's last child. Everything you will have added then becomes the content of the dropdown menu.
-*/
-
-// Required module list. Remove unnecessary modules, you can always get them back from the boilerplate.
 define([
-    'dojo/_base/declare', 'mxui/widget/_WidgetBase', 'dijit/_TemplatedMixin',
-    'mxui/dom', 'dojo/dom', 'dojo/query', 'dojo/NodeList-traverse' , 'dojo/dom-prop', 'dojo/dom-geometry', 'dojo/dom-class', 'dojo/dom-style', 'dojo/dom-construct', 'dojo/_base/array', 'dojo/_base/lang', 'dojo/text', 'dojo/html', 'dojo/_base/event',
-     'dojo/text!DropdownDivConverter/widget/template/DropdownDivConverter.html'
-], function (declare, _WidgetBase, _TemplatedMixin, dom, dojoDom, domQuery, domTraverse, domProp, domGeom, domClass, domStyle, domConstruct, dojoArray, lang, text, html, event, widgetTemplate) {
-    'use strict';
+    "dojo/_base/declare",
+    "mxui/widget/_WidgetBase",
+    "dijit/_TemplatedMixin",
+    "mxui/dom",
+    "dojo/query",
+    "dojo/dom-class",
+    "dojo/dom-construct",
+    "dojo/_base/array",
+    "dojo/_base/lang",
+    "dojo/_base/event",
+    "dojo/text!DropdownDivConverter/widget/template/DropdownDivConverter.html",
+    "dojo/NodeList-traverse"
+], function (declare, _WidgetBase, _TemplatedMixin, dom, domQuery, domClass, domConstruct, dojoArray, lang, event, widgetTemplate) {
+    "use strict";
 
-    // Declare widget's prototype.
-    return declare('DropdownDivConverter.widget.DropdownDivConverter', [_WidgetBase, _TemplatedMixin], {
+    /*
+        DropdownDivConverter
+        ========================
 
-        // _TemplatedMixin will create our dom node using this HTML template.
+        @file      : DropdownDivConverter.js
+        @version   : 1.5.1
+        @author    : Willem Gorisse
+        @date      : Wed, 4 Jul 2017 15:15:32 GMT
+        @copyright : 2015 Mendix
+        @license   : Apache Licence 2.0
+
+        Documentation
+        ========================
+        The DropdownDivConverter converts a Mendix (div-)container into a - Bootstrap based - dropdown menu with a button. Simply create a container in Mendix with all the content you want in the dropdown menu and the DropdownDivConverter widget as it"s last child. Everything you will have added then becomes the content of the dropdown menu.
+    */
+
+    return declare("DropdownDivConverter.widget.DropdownDivConverter", [_WidgetBase, _TemplatedMixin], {
+
+        // Template
         templateString: widgetTemplate,
 
         // Parameters configured in the Modeler.
@@ -42,22 +46,19 @@ define([
         splitButtonActive: "",
         splitButtonClicked:"",
 
+        // Internal
         _contextObj: null,
         _alertDiv: null,
-        _allDropDowns: {},
         _eventsSet: null,
         _isOpen: null,
         _buttonLabel: null,
         _dynamicLabel: false,
 
-        // dojo.declare.constructor is called to construct the widget instance. Implement to initialize non-primitive properties.
         constructor: function () {
             this._eventsSet = false;
         },
 
-        // dijit._WidgetBase.postCreate is called after constructing the widget. Implement to do extra setup work.
         postCreate: function () {
-            this._allDropDowns[this.id] = this;
             this._isOpen = false;
         },
 
@@ -66,7 +67,6 @@ define([
             this._contextObj = obj;
 
             // preset the label
-
             if (this.dynamicButtonTitleAttribute !== "" && this._contextObj !== null) {
                 this._dynamicLabel = true;
             }
@@ -75,7 +75,6 @@ define([
             this._updateRendering(callback);
         },
 
-        // Reordering the interface: selecting the siblings and putting them in the dropdown menu
         _updateRendering: function (callback) {
             // find all the siblings
             var siblings = domQuery(this.domNode).siblings();
@@ -153,14 +152,14 @@ define([
 
                 // Mendix buttons and links stop events from bubbling: set actions for internal button clicks to close the menu if needed
                 if (this.autoClose){
-                    this.connect(this.dropdownMenu, 'click', lang.hitch(this,function(e){
+                    this.connect(this.dropdownMenu, "click", lang.hitch(this,function(e){
                         if (this._isOpen) {
                             this._toggleMenu();
                         }
                     }));
 
                     var internalButtons = domQuery("button, a", this.dropdownMenu);
-                    dojoArray.forEach(internalButtons, lang.hitch(this,function(node, i){
+                    dojoArray.forEach(internalButtons, lang.hitch(this,function(node){
                         this.connect(node, "click", lang.hitch(this, function(e) {
                             if (this._isOpen){
                                 this._toggleMenu();
@@ -169,15 +168,15 @@ define([
                     }));
                     // add logic to deal with listviews as they stop events from 6+
                     var internalListviews = domQuery(".mx-listview-clickable .mx-list", this.dropdownMenu);
-                    dojoArray.forEach(internalListviews, lang.hitch(this,function(listNode, i){
+                    dojoArray.forEach(internalListviews, lang.hitch(this,function(listNode){
                         var listItemClick = lang.hitch(this,function(e) {
                             if (this._isOpen){
                                 this._toggleMenu();
                             }});
-                        listNode.addEventListener('click', listItemClick,true);
+                        listNode.addEventListener("click", listItemClick,true);
                         // manually remove the eventlistener on destroy
                         this.addOnDestroy(function(){
-                            listNode.removeEventListener('click', listItemClick, true)
+                            listNode.removeEventListener("click", listItemClick, true);
                         });
                     }));
                 }
@@ -191,13 +190,10 @@ define([
                                 this._toggleMenu();
                             }
                         }
-
                         // if a microflow is checked and a contextobject is defined
                         if (this.splitButtonClicked !== "" && this._contextObj) {
                             // do we have a contextObj for the microflow?
-
                             var id = this._contextObj.getGuid();
-
                             mx.ui.action(this.splitButtonClicked, {
                                 params          : {
                                     applyto     : "selection",
@@ -211,27 +207,16 @@ define([
                                 }
                             }, this);
                         } else if (this.simpleSplitButtonClicked !== "") {
-
                             mx.ui.action(this.simpleSplitButtonClicked, {
                                 params          : {
                                     applyto     : "none"
-                                },
-                                callback        : function(success) {
-                                    // if success was true, the microflow was indeed followed through
-                                },
-                                error           : function(error) {
-                                    // if there was an error
                                 }
                             }, this);
                         }
-
                     }));
                 }
-
             }
-            if (callback){
-                callback();
-            }
+            this._executeCallback(callback, "_setupEvents");
         },
 
         // toggle dropdown state
@@ -255,15 +240,13 @@ define([
                 domClass.add(button,typeClassName);
             }
 
-            switch(this.buttonSize) {
-                case "default":
-                    // default buttonsize is allready implemented
-                    break;
-                default:
-                    sizeClassName = "btn-"+this.buttonSize;
-                    if (!domClass.contains(button,sizeClassName)){
-                        domClass.add(button,sizeClassName);
-                    }
+            if (this.buttonSize === "default") {
+                return;
+            }
+
+            sizeClassName = "btn-" + this.buttonSize;
+            if (!domClass.contains(button, sizeClassName)) {
+                domClass.add(button, sizeClassName);
             }
         },
 
@@ -285,7 +268,7 @@ define([
             this._setButtonTypes(this.splitButton);
 
             // adjust the dropdownButtons content
-            this.dropdownButton.innerHTML = "<span class='caret'></span><span class='sr-only'>Toggle Dropdown</span";
+            this.dropdownButton.innerHTML = "<span class=\"caret\"></span><span class=\"sr-only\">Toggle Dropdown</span>";
         },
 
         // update the dynamic button title
@@ -305,7 +288,6 @@ define([
         _resetSubscriptions: function () {
             this.unsubscribeAll();
             if (this._contextObj) {
-
                 this.subscribe({
                     guid: this._contextObj.getGuid(),
                     callback: lang.hitch(this, function (guid) {
@@ -313,9 +295,15 @@ define([
                     })
                 });
             }
+        },
+
+        _executeCallback: function (cb, from) {
+            logger.debug(this.id + "._executeCallback" + (from ? " from " + from : ""));
+            if (cb && typeof cb === "function") {
+                cb();
+            }
         }
     });
 });
-require(['DropdownDivConverter/widget/DropdownDivConverter'], function () {
-    'use strict';
-});
+
+require(["DropdownDivConverter/widget/DropdownDivConverter"]);
