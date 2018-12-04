@@ -72,13 +72,13 @@ define([
             }
 
             this._resetSubscriptions();
-            
+
             //update context in any child widgets!
-            var children = this.getChildren();
-            for (var i=0;i<children.length;i++) {
-                children[i].applyContext(this.mxcontext,function(){})
+            var children = this.getChildren && this.getChildren() || [];
+            for (var i=0; i<children.length; i++) {
+                children[i].applyContext(this.mxcontext, function(){ });
             }
-            
+
             this._updateRendering(callback);
         },
 
