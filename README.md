@@ -24,14 +24,32 @@ Note that 'Dropdown button label'-setting will now be used for the label on the 
 
 ## Implementation steps
 
-1. Create a container element with all the contents needed in the dropdown menu (including any needed logic).
-2. Add the DropdownDivConverter widget as the container's last child.
-3. Change the widget settings to accomodate for the wanted behaviour / appearance.
+1. Create a container element (parent)
+2. Create a container element (child) inside this container with all the contents needed in the dropdown menu (including any needed logic).
+3. Add the DropdownDivConverter widget to the parent container, after the child container
+4. Change the widget settings to accomodate for the wanted behaviour / appearance.
+
+Structure:
+
+```
+- Container
+  - Container
+    - Element for dropdown
+    - Element for dropdown
+    - etc
+  - DropdownDivConverter
+```
 
 ## Notes
 It's possible to use multiple DropdownDivConverter widgets on the same page. That does mean that the dropdown-menu will be included in the normal HTML contents of the Mendix application. Sometimes this will have the effect that a dataview e.g. does not accomodate any space for the dropdown menu itself. Use the css propery "overflow: visible" to solve this issue.
 
 Since the dropdown menu is based on bootstraps dropdown button it is recommended to follow the applications Bootstrap theming rules with respect to buttons.
+
+## Troubleshooting
+
+*I am getting the error __Unable to destroy:: Error while uninitialize NotFoundError: Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.__*
+
+This unfortunately is a result of changes that occured in Mendix 7.18 and has to do with other elements, such as dynamic texts. These have become React components, which need a parent node. The DropdownDivConverter makes changes in the DOM, which breaks this behavior. In order to fix this, please look at the implementation steps. That should fix your problem.
 
 ## Release Notes
 Appstore 1.5 release:
