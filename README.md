@@ -39,6 +39,10 @@ Structure:
     - etc
   - DropdownDivConverter
 ```
+Example:
+
+![](assets/dropdown-divconverter.png)
+
 
 ## Notes
 It's possible to use multiple DropdownDivConverter widgets on the same page. That does mean that the dropdown-menu will be included in the normal HTML contents of the Mendix application. Sometimes this will have the effect that a dataview e.g. does not accomodate any space for the dropdown menu itself. Use the css propery "overflow: visible" to solve this issue.
