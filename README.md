@@ -1,5 +1,7 @@
 # DropdownDivConverter widget
 
+> **Are you using Mendix 8.2.2 or higher? Consider moving from the DropdownDivConverter to [Dropdown Container](https://appstore.home.mendix.com/link/app/111568/). This resolves any issues with implementing a proper dropdown in React!**
+
 A very easy way of creating custom - Bootstrap based - dropdown menu's. Create whatever you want in the Mendix Modeler and use this as content for the dropdown menu.
 
 ## Contributing
