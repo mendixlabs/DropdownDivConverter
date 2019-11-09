@@ -72,6 +72,7 @@
             <description>The attribute that sets the label on the dropdown button. If used, the static value on the general tab will be overridden.</description>
             <attributeTypes>
                 <attributeType name="String" />
+                <attributeType name="Enum" />
             </attributeTypes>
         </property>
         <property key="splitButtonActive" type="boolean" defaultValue="false" required="true">
