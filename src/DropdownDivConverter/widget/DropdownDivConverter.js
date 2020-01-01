@@ -281,7 +281,7 @@ define([
         // update the dynamic button title
         _updateButtonTitle: function() {
             this._buttonLabel = this.buttonTitle;
-            if (this._dynamicLabel) {
+            if (this._dynamicLabel && this._contextObj) {
                 this._buttonLabel = this._contextObj.get(this.dynamicButtonTitleAttribute);
             }
         },
